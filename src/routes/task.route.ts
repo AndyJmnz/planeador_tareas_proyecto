@@ -27,7 +27,7 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-router.get('/:id', async (req, res, next) => {
+router.get('/findById/:id', async (req, res, next) => {
     try {
       const task = await service.findById(req.params.id)
       res.status(200).json(task)
@@ -36,9 +36,9 @@ router.get('/:id', async (req, res, next) => {
     }
 })
   
-router.get('/', async (req, res, next) => {
+router.get('/findByName', async (req, res, next) => {
     try {
-      const task = await service.findById(req.query.name as string)
+      const task = await service.findByName(req.query.name as string)
       res.status(200).json(task)
     } catch (error) {
       next(error)

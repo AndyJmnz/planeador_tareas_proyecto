@@ -32,7 +32,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.get('/', async (req, res, next) => {
   try {
-    const category = await service.findById(req.query.name as string)
+    const category = await service.findByName(req.query.name as string)
     res.status(200).json(category)
   } catch (error) {
     next(error)
