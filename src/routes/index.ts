@@ -1,6 +1,8 @@
 import express from 'express'
 import CategoryRouter from './category.route'
 import TaskRouter from './task.route'
+import UserRouter from './user.route'
+import AuthRouter from './auth.route'
 
 const routerApi = (app) => {
   const router = express.Router()
@@ -9,6 +11,8 @@ const routerApi = (app) => {
 
   router.use('/tasks', TaskRouter)
 
+  router.use('/users', UserRouter)
+  router.use('/auth', AuthRouter)
 }
 
 export default routerApi
