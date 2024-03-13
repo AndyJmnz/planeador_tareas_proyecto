@@ -1,17 +1,26 @@
+import { ObjectId } from 'mongoose'
 import Task from '../models/task.models'
 import { Tasks, TasksModel } from '../types/task.type'
 import boom from '@hapi/boom'
 
 class TaskService {
-    async create(task: Tasks) {
-        const newTask = await Task.create(task).catch((error) => {
+    async create(task: Tasks, userId: ObjectId) {
+        const newTask = await Task.create({
+            ...task,
+            user: userId
+        }).catch((error) => {
             console.log('Could not save task', error)
         })
-        return newTask
+
+        const existingTask = await this.findById((newTask as any)._id)
+
+        return existingTask.populate([{path: 'user', strictPopulate: false}])
     }
 
     async findAll() {
-        const task = await Task.find().catch((error) => {
+        const task = await Task.find()
+        .populate([{path: 'user', strictPopulate: false}])
+        .catch((error) => {
             console.log('Error while connecting to the DB', error)
         })
         if (!task) {
@@ -39,6 +48,33 @@ class TaskService {
         throw boom.notFound('Task not found')
         }
         return task
+    }
+
+    //Buscar tareas por usuario
+    async findByUser(user: string) { 
+        try {
+            const tasks = await Task.find({ user });
+            if (!tasks || tasks.length === 0) {
+                throw new Error('Task not found');
+            }
+            return tasks;
+        } catch (error) {
+            console.log('Error while finding tasks:', error);
+            throw new Error('Error finding tasks');
+        }
+    }
+
+    async findByStatus(status: string){
+        try {
+            const tasks = await Task.find({ status });
+            if (!tasks || tasks.length === 0) {
+                throw new Error('Task not found');
+            }
+            return tasks;
+        } catch (error) {
+            console.log('Error while finding tasks:', error);
+            throw new Error('Error finding tasks');
+        }
     }
 }
 
