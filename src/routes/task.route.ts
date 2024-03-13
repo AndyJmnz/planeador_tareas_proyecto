@@ -1,11 +1,12 @@
 import express from 'express'
 import { Tasks } from '../types/task.type'
 import TaskService from '../services/task.service'
-import passport from 'passport'
-import { UserRequestType } from '../types/user.type'
 
 import { JwtRequestType } from '../types/user.type'
 import { ObjectId } from 'mongoose'
+
+import passport from 'passport'
+import { UserRequestType } from '../types/user.type'
 
 const router = express.Router()
 const service = new TaskService()
