@@ -11,6 +11,18 @@ import { UserRequestType } from '../types/user.type'
 const router = express.Router()
 const service = new TaskService()
 
+router.get(
+  "/findSecond",
+  async(req,res,next) => {
+    try {
+      const category = await service.findSecond()
+      res.status(200).json(category)
+    } catch (error) {
+      next(error)
+    }
+  }
+)
+
 router.post(
   '/',
   passport.authenticate('jwt', { session: false }),

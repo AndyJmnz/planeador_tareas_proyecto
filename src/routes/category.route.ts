@@ -8,6 +8,7 @@ import { ObjectId } from 'mongoose'
 const router = express.Router()
 const service = new CategoryService()
 
+
 router.post(
   '/', 
   
@@ -67,5 +68,6 @@ router.get(
     }
   }
 )
+
 
 export default router

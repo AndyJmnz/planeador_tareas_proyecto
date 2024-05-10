@@ -14,44 +14,44 @@ class TaskService {
 
         const existingTask = await this.findById((newTask as any)._id)
 
-        return existingTask.populate([{path: 'user', strictPopulate: false}])
+        return existingTask.populate([{ path: 'user', strictPopulate: false }])
     }
 
     async findAll() {
         const task = await Task.find()
-        .populate([{path: 'user', strictPopulate: false}])
-        .catch((error) => {
-            console.log('Error while connecting to the DB', error)
-        })
+            .populate([{ path: 'user', strictPopulate: false }])
+            .catch((error) => {
+                console.log('Error while connecting to the DB', error)
+            })
         if (!task) {
             throw boom.notFound('There are not tasks')
         }
         return task
     }
-    
+
     async findById(id: string) {
         const task = await Task.findById(id).catch((error) => {
-        console.log('Error while connecting to the DB', error)
+            console.log('Error while connecting to the DB', error)
         })
         if (!task) {
-        throw boom.notFound('Category not found')
+            throw boom.notFound('Category not found')
         }
         return task
     }
 
     async findByName(name: string) {
         const task = await Task.findOne({ name }).catch((error) => {
-        console.log('Error while connecting to the DB', error)
+            console.log('Error while connecting to the DB', error)
         })
 
         if (!task) {
-        throw boom.notFound('Task not found')
+            throw boom.notFound('Task not found')
         }
         return task
     }
 
     //Buscar tareas por usuario
-    async findByUser(user: string) { 
+    async findByUser(user: string) {
         try {
             const tasks = await Task.find({ user });
             if (!tasks || tasks.length === 0) {
@@ -64,7 +64,7 @@ class TaskService {
         }
     }
 
-    async findByStatus(status: string){
+    async findByStatus(status: string) {
         try {
             const tasks = await Task.find({ status });
             if (!tasks || tasks.length === 0) {
@@ -75,6 +75,15 @@ class TaskService {
             console.log('Error while finding tasks:', error);
             throw new Error('Error finding tasks');
         }
+    }
+    async findSecond() {
+        const task = await Task.find().catch((error) => {
+            console.log('Error while connecting to the DB', error)
+        })
+        if (!task) {
+            throw boom.notFound('Task not found')
+        }
+        return task[1]
     }
 }
 
