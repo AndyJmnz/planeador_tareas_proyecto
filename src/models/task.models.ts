@@ -18,7 +18,8 @@ const TaskSchema = new Schema<Tasks, TasksModel>({
   },
   description: {
     type: String,
-    trim: true
+    trim: true,
+    required:true
   },
   status:{
     type: String,
