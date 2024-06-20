@@ -85,6 +85,20 @@ class TaskService {
         }
         return task[1]
     }
+
+
+    async deleteTask(id: string) {
+        try {
+            const task = await Task.findByIdAndDelete(id);
+            if (!task) {
+                throw boom.notFound('Task not found');
+            }
+            return task;
+        } catch (error) {
+            console.log('Error while deleting task:', error);
+            throw new Error('Error deleting task');
+        }
+    }
 }
 
 export default TaskService

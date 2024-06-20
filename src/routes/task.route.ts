@@ -114,4 +114,18 @@ router.get(
   }
 )
 
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const taskId = req.params.id;
+      await service.deleteTask(taskId);
+      res.status(204).send(); // 204 No Content
+    } catch (error) {
+      next(error);
+    }
+  }
+)
+
 export default router
