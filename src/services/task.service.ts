@@ -106,6 +106,23 @@ class TaskService {
         }
         return task
     }
+
+    async updateTaskStatus(taskId: string, status: string) {
+        const updatedTask = await Task.findByIdAndUpdate(
+            taskId,
+            { status },
+            { new: true } // Para devolver el documento actualizado
+        ).catch((error) => {
+            console.log('Error while updating task status', error);
+            throw boom.internal('Internal server error');
+        });
+
+        if (!updatedTask) {
+            throw boom.notFound('Task not found');
+        }
+
+        return updatedTask;
+    }
 }
 
 export default TaskService

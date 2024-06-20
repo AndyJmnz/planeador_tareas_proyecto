@@ -144,4 +144,18 @@ router.put(
   }
 )
 
+router.patch(
+  '/:id/status',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const taskId = req.params.id;
+      const updatedTask = await service.updateTaskStatus(taskId, "Completado");
+      res.status(200).json(updatedTask);
+    } catch (error) {
+      next(error);
+    }
+  }
+)
+
 export default router
