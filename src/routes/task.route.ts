@@ -128,4 +128,20 @@ router.delete(
   }
 )
 
+// Nueva ruta para actualizar una tarea por ID
+router.put(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res, next) => {
+    try {
+      const taskId = req.params.id;
+      const { name, description } = req.body;
+      const updatedTask = await service.updateTask(taskId, { name, description });
+      res.status(200).json(updatedTask);
+    } catch (error) {
+      next(error);
+    }
+  }
+)
+
 export default router

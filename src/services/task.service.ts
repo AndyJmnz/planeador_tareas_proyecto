@@ -76,6 +76,7 @@ class TaskService {
             throw new Error('Error finding tasks');
         }
     }
+
     async findSecond() {
         const task = await Task.find().catch((error) => {
             console.log('Error while connecting to the DB', error)
@@ -86,18 +87,24 @@ class TaskService {
         return task[1]
     }
 
-
     async deleteTask(id: string) {
-        try {
-            const task = await Task.findByIdAndDelete(id);
-            if (!task) {
-                throw boom.notFound('Task not found');
-            }
-            return task;
-        } catch (error) {
-            console.log('Error while deleting task:', error);
-            throw new Error('Error deleting task');
+        const task = await Task.findByIdAndDelete(id).catch((error) => {
+            console.log('Error while connecting to the DB', error)
+        })
+        if (!task) {
+            throw boom.notFound('Task not found')
         }
+        return task
+    }
+
+    async updateTask(id: string, taskData: Partial<Tasks>) {
+        const task = await Task.findByIdAndUpdate(id, { $set: taskData }, { new: true }).catch((error) => {
+            console.log('Error while connecting to the DB', error)
+        })
+        if (!task) {
+            throw boom.notFound('Task not found')
+        }
+        return task
     }
 }
 
